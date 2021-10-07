@@ -7,7 +7,7 @@ if(recherche_param.has('id')) {
     console.log(id);
 }
 
-
+/* affichage du produit choisis */ 
 const myFetch = fetch("http://localhost:3000/api/products");
 
 myFetch.then(res => res.json())
@@ -24,9 +24,45 @@ myFetch.then(res => res.json())
                     document.getElementById("colors").innerHTML += `<option value="${couleur}">${couleur}</option>`;
                     }       
                 }
-             }           
+            }        
         }   
     )
+/*envois produit vers cart*/
+/*let bouton = document.getElementById('addToCart')
+bouton("click", function(){
+    fetch("http://localhost:3000/api/products"),{
+        "method":"POST",
+        Headers:{
+            'Content-Type': 'application/json'
+        },
+        'body': JSON.stringify({}) 
+    }
+})*/
+let bouton = document.getElementById('addToCart');
+function couleur(_selectId='colors'){
+    let couleur = document.getElementById('colors');
+    return couleur.options[couleur.selectedIndex].value;
+}
+function nombre() {
+    var nombre = document.getElementById('quantity').value;
+
+    return nombre;
+}
+/*let nombre = document.getElementsById('quantity').value;*/
+bouton.addEventListener("click", function(){
+    localStorage.setItem("id", id)
+    localStorage.setItem("couleur", couleur())
+    localStorage.setItem('nombre', nombre())
+    console.log(localStorage)
+    fetch("http://localhost:3000/api/products"),{
+        method : "POST",
+        Headers : {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify
+    }
+})
+
 
 
 
