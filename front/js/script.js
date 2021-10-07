@@ -1,25 +1,33 @@
+/* création de la classe produit */
+class Produit{
+    constructor(jsonProduit){
+        jsonProduit && Object.assign(this, jsonProduit)
+    }
+}
+
 /* Recuperation du contenu de l'api et insertion dans le dom */
+const myFetch = fetch("http://localhost:3000/api/products");
 
 
-fetch("http://localhost:3000/api/products")
-    .then(function(produit){
-        if(produit.ok){
-            return produit.json();
-            
+    myFetch.then(data => data.json())
+    .then( jsonlistproduit =>{
+        for(let jsonProduit of jsonlistproduit){
+            let produit = new Produit(jsonProduit);
+            document.querySelector("section").innerHTML += 
+            `<a href="./product.html?id=${produit._id}">
+                <article>
+                    <img src="${produit.imageUrl}" alt="${produit.altTxt}">
+                    <h3 class="productName">
+                    ${produit.name}
+                    </h3>
+                    <p class="productDescription">
+                    ${produit.description}
+                    </p>
+                </article>
+            </a>`
         }
     })
-        .then(function(value){
-            console.log(value)
-            for(let i in value){
-                let item = document.getElementById('items')
-                item.innerHTML += '<a href="./product.html?id='+value[i]._id+'"><article><img src="'+value[i].imageUrl+'" alt="'+value[i].altTxt+'"><h3 class="productName">'+value[i].name+'</h3><p class="productDescription">'+value[i].description+'</p></article></a>'
-            }
-        })
-        .catch(function(err){
-            console.log(err)
-        })
-    
-        
+ 
     
 
 

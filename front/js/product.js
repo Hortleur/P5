@@ -1,5 +1,4 @@
 /* verification de paramètre dans l'url */
-
 var str = window.location.href;
 var url = new URL(str)
 var recherche_param = new URLSearchParams(url.search);
@@ -9,27 +8,27 @@ if(recherche_param.has('id')) {
 }
 
 
+const myFetch = fetch("http://localhost:3000/api/products");
 
-/* récupération du produit */
+myFetch.then(res => res.json())
+        .then(data => {
+            for (let index = 0; index < data.length; index++) {
+                const produit = data[index];
+                if (produit._id == id) {
+                    document.querySelector(".item__img").innerHTML =`<img src="${produit.imageUrl}" alt="${produit.altTxt}">`;
+                    document.getElementById("title").innerHTML = `${produit.name}`;
+                    document.getElementById("price").innerHTML = `${produit.price}`;
+                    document.getElementById("description").innerHTML = `${produit.description}`;  
+                    for (let color = 0; color < produit.colors.length; color++) {
+                    const couleur = produit.colors[color];
+                    document.getElementById("colors").innerHTML += `<option value="${couleur}">${couleur}</option>`;
+                    }       
+                }
+             }           
+        }   
+    )
 
-fetch("http://localhost:3000/api/products")
-    .then(function(produit){
-        if (produit.ok) {
-            return produit.json();
-        }
-    })
-    .then(function(value) {
-        value.forEach(id => {
-            console.log(id)
-            if (value.id === id) {
-                document
-                    .getElementsByClassName('item_img')
-                    .innerHTML = '<img src="'+value[id].imageUrl+'" alt="'+value[id].altTxt+'"/>';
-                document    
-                    .getElementsById('description')
-                    .innerHTML = value[id].description;
 
-                    
-            }
-        });
-    })
+
+
+    
