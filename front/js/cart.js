@@ -8,14 +8,17 @@ console.log(panier)
 
 
 
-
 //recuperer les produits du panier et les affichées
 for (const produit in panier) {
+  
   if (Object.hasOwnProperty.call(panier, produit)) {
     const item = panier[produit];
     let produitId = item.id;
     let produitColor = item.color;
     let produitQuantity = item.qty;
+
+
+    
     fetch(`http://localhost:3000/api/products/${produitId}`)
     .then(res => res.json())
     .then( produitApi => {
@@ -23,6 +26,7 @@ for (const produit in panier) {
         let produitAlt = produitApi.altTxt
         let produitNom = produitApi.name
         let produitPrix = produitApi.price
+        let total = produitPrix * produitQuantity
             
             document.getElementById("cart__items").innerHTML += 
               `<article class="cart__item" data-id="${produitId}">
@@ -33,7 +37,7 @@ for (const produit in panier) {
                   <div class="cart__item__content__titlePrice">
                     <h2>${produitNom}</h2>
                     <p>${produitColor}</p>
-                    <p id="prix">${produitPrix} €</p>
+                    <p data-name="prix" id="prix">${total} €</p>
                   </div>
                   <div class="cart__item__content__settings">
                     <div class="cart__item__content__settings__quantity">
@@ -45,21 +49,14 @@ for (const produit in panier) {
                     </div>
                   </div>
                 </div>
-              </article>`    
+              </article>`  
+                
+              
           }
+          
         )   
     }  
 }
 
-panier.forEach(item => {
-    let produitId = item.id
-    let produitqty= item.qty
-    console.log(produitId)
-    fetch(`http://localhost:3000/api/products/${produitId}`)
-      .then(res => res.json())
-      .then(produits => {
-        let produitPrix = produits.price
-        let produitPrixTotal = produitqty*produitPrix
-        console.log(produitPrixTotal)
-      })
-});
+
+

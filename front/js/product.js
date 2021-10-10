@@ -38,6 +38,7 @@ bouton.addEventListener("click", function(){
         color: couleur(),
         qty: nombre(),
     }
+    
     // S'il y a du monde dans le panier
     if(localStorage.getItem('cart') && localStorage.getItem('cart').length > 0) {
         const cart = JSON.parse(localStorage.getItem('cart'));
@@ -52,10 +53,12 @@ bouton.addEventListener("click", function(){
             cart[productPosition].qty = parseInt(cart[productPosition].qty) + parseInt(newItem.qty);
             localStorage.setItem('cart', JSON.stringify(cart));
         }
+        window.alert('Ce canapé à bien été ajouté à bien');
     } else {
         let newCart = new Array();
         newCart.push(newItem);
         localStorage.setItem('cart', JSON.stringify(newCart));
+        window.alert('Ce canapé à bien été ajouté à bien');
     }
 })
 console.log(localStorage)
