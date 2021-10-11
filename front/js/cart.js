@@ -6,6 +6,12 @@ console.log(localStorage)
 let panier = JSON.parse(localStorage.getItem('cart'));
 console.log(panier)
 
+let prixTotal = new Array()
+
+
+let quantiteTotal = new Array()
+
+
 
 
 //recuperer les produits du panier et les affichées
@@ -16,6 +22,7 @@ for (const produit in panier) {
     let produitId = item.id;
     let produitColor = item.color;
     let produitQuantity = item.qty;
+
 
 
     
@@ -50,13 +57,41 @@ for (const produit in panier) {
                   </div>
                 </div>
               </article>`  
-                
+
               
-          }
-          
-        )   
-    }  
+
+
+              //prix total  
+              let ajoutTableauTotal = prixTotal.push(total)
+              const reducer = (previousValue, currentValue) => previousValue + currentValue;
+              let prixFinal = prixTotal.reduce(reducer)
+              document.getElementById('totalPrice').innerHTML = prixFinal
+
+              //quantité totale
+
+              let ajoutQuantiteTotale = quantiteTotal.push(produitQuantity);
+              const compte = (previousValue, currentValue) => parseInt(previousValue) + parseInt(currentValue);
+              let quantiteFinale = quantiteTotal.reduce(compte)
+              document.getElementById('totalQuantity').innerHTML = quantiteFinale
+              
+
+              // suppression article
+              
+            }
+        ) 
+     }  
 }
 
+let suppr = document.getElementsByClassName('deleteItem')  
+console.log(suppr)
 
+for (const produit in panier) {
+  if (Object.hasOwnProperty.call(panier, produit)) {
+    const produitId = panier[produit].id;
+    console.log(produitId)
+    
+    let article = document.querySelector('#cart__items')
+    console.log(article)
 
+  }
+}
