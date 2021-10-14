@@ -54,23 +54,23 @@ for (const produit of panier) {
               document.getElementById('totalQuantity').innerHTML = quantiteTotal
           // suppression article
               let supprItem = document.querySelector('.deleteItem')
-              console.log(supprItem)  
               let article = document.querySelector(`.item_${produitId}`)
               let articleId = article.dataset.id
-              console.log(articleId)
               let pos = panier.findIndex(item => item.id === articleId && item.color === produitColor)
-              console.log(pos)
-              let removedItem =  panier[pos]
-                   console.log(removedItem)
-              
+              let removedItem =  panier[pos]            
               supprItem.addEventListener('click', function(){      
-                    let newPanier = panier.splice(pos,1); 
-                    console.log(newPanier)   
-                    console.log(panier)
+                    let newPanier = panier.splice(pos,1);   
                     localStorage.clear;
                     localStorage.setItem('cart',JSON.stringify(panier))
                     window.alert('Le produit a bien été supprimer')
                     location.href = "cart.html"
+                })
+            
+            // changement de quantité
+                let qtyChange = document.querySelector('.itemQuantity')
+                console.log(qtyChange)
+                qtyChange.addEventListener('change', function(){
+                    
                 })
             }
         )  
