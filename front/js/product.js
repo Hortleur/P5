@@ -4,7 +4,6 @@ var url = new URL(str)
 var recherche_param = new URLSearchParams(url.search);
 if(recherche_param.has('id')) {
     var produitUrlId = recherche_param.get('id');
-    console.log(produitUrlId);
 }
 
 /* affichage du produit choisis */ 
@@ -61,7 +60,7 @@ bouton.addEventListener("click", function(){
         window.alert('Ce canapé à bien été ajouté à bien');
     }
 })
-console.log(localStorage)
+
 
 
 

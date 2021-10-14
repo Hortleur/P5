@@ -62,8 +62,15 @@ for (const produit of panier) {
               console.log(pos)
               let removedItem =  panier[pos]
                    console.log(removedItem)
+              
               supprItem.addEventListener('click', function(){      
-                   localStorage.removeItem('removedItem')                  
+                    let newPanier = panier.splice(pos,1); 
+                    console.log(newPanier)   
+                    console.log(panier)
+                    localStorage.clear;
+                    localStorage.setItem('cart',JSON.stringify(panier))
+                    window.alert('Le produit a bien été supprimer')
+                    location.href = "cart.html"
                 })
             }
         )  
