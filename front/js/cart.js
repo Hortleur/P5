@@ -6,6 +6,21 @@ console.log(panier)
 let prixTotal = 0
 let quantiteTotal = 0
 
+
+// fonction de suppression
+function deleteItem(produitId, produitColor) {
+  const article = document.querySelector(`.item_${produitId}`)
+  const pos = panier.findIndex(item => item.id === produitId && item.color === produitColor)
+  panier.splice(pos,1);   
+  localStorage.clear;
+  localStorage.setItem('cart',JSON.stringify(panier))
+  window.alert('Le produit a bien été supprimer')
+  article.remove()
+}
+
+// fonction de changement de quantité
+
+
 //recuperer les produits du panier et les affichées
 for (const produit of panier) {
 
@@ -24,11 +39,11 @@ for (const produit of panier) {
         let total = produitPrix * produitQuantity
 
         let newItem = `<article class="cart__item item_${produitId}" data-id="${produitId}">
-    <div class="cart__item__img">
-      <img src="${produitImage}" alt="${produitAlt}">
-    </div>
-    <div class="cart__item__content">
-      <div class="cart__item__content__titlePrice">
+        <div class="cart__item__img">
+        <img src="${produitImage}" alt="${produitAlt}">
+        </div>
+        <div class="cart__item__content">
+        <div class="cart__item__content__titlePrice">
         <h2>${produitNom}</h2>
         <p>${produitColor}</p>
         <p data-name="prix" id="prix">${total} €</p>
@@ -53,24 +68,22 @@ for (const produit of panier) {
               quantiteTotal = parseInt(quantiteTotal) + parseInt(produitQuantity)
               document.getElementById('totalQuantity').innerHTML = quantiteTotal
           // suppression article
-              let supprItem = document.querySelector('.deleteItem')
-              let article = document.querySelector(`.item_${produitId}`)
-              let articleId = article.dataset.id
-              let pos = panier.findIndex(item => item.id === articleId && item.color === produitColor)
-              let removedItem =  panier[pos]            
+              let supprItem = document.querySelector('.deleteItem')                
               supprItem.addEventListener('click', function(){      
-                    let newPanier = panier.splice(pos,1);   
-                    localStorage.clear;
-                    localStorage.setItem('cart',JSON.stringify(panier))
-                    window.alert('Le produit a bien été supprimer')
-                    location.href = "cart.html"
+                    deleteItem(produitId, produitColor)
                 })
             
             // changement de quantité
                 let qtyChange = document.querySelector('.itemQuantity')
                 console.log(qtyChange)
-                qtyChange.addEventListener('change', function(){
-                    
+                qtyChange.addEventListener('change', function(e){
+                  const pos = panier.findIndex(item => item.id === produitId && item.color === produitColor)
+                      let newValue = e.target.value
+                      console.log(newValue)
+                      console.log(e.target.value)
+                      panier[pos].produitQuantity = newValue
+                      console.log(panier[pos].produitQuantity)
+                      console.log(panier)
                 })
             }
         )  
