@@ -21,6 +21,15 @@ function deleteItem(produitId, produitColor) {
 // fonction de changement de quantité
 
 
+//fontion mise a jour prix, quantité et total
+function maj() {
+  prixTotal= parseInt(prixTotal) + parseInt(total)
+              document.getElementById('totalPrice').innerHTML = prixTotal
+
+  quantiteTotal = parseInt(quantiteTotal) + parseInt(produitQuantity)
+  document.getElementById('totalQuantity').innerHTML = quantiteTotal
+}
+
 //recuperer les produits du panier et les affichées
 for (const produit of panier) {
 
@@ -81,9 +90,13 @@ for (const produit of panier) {
                       let newValue = e.target.value
                       console.log(newValue)
                       console.log(e.target.value)
-                      panier[pos].produitQuantity = newValue
-                      console.log(panier[pos].produitQuantity)
+                      panier[pos].qty = newValue
+                      console.log(panier[pos].qty)
                       console.log(panier)
+                      localStorage.clear
+                      localStorage.setItem('cart', JSON.stringify(panier))
+                      document.querySelector("#quantite").innerHTML = `Qté:${newValue}`;
+                      maj()
                 })
             }
         )  
