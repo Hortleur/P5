@@ -22,13 +22,7 @@ function deleteItem(produitId, produitColor) {
 
 
 //fontion mise a jour prix, quantité et total
-function maj() {
-  prixTotal= parseInt(prixTotal) + parseInt(total)
-              document.getElementById('totalPrice').innerHTML = prixTotal
 
-  quantiteTotal = parseInt(quantiteTotal) + parseInt(produitQuantity)
-  document.getElementById('totalQuantity').innerHTML = quantiteTotal
-}
 
 //recuperer les produits du panier et les affichées
 for (const produit of panier) {
@@ -83,21 +77,17 @@ for (const produit of panier) {
                 })
             
             // changement de quantité
-                let qtyChange = document.querySelector('.itemQuantity')
-                console.log(qtyChange)
-                qtyChange.addEventListener('change', function(e){
-                  const pos = panier.findIndex(item => item.id === produitId && item.color === produitColor)
-                      let newValue = e.target.value
-                      console.log(newValue)
-                      console.log(e.target.value)
-                      panier[pos].qty = newValue
-                      console.log(panier[pos].qty)
-                      console.log(panier)
-                      localStorage.clear
-                      localStorage.setItem('cart', JSON.stringify(panier))
-                      document.querySelector("#quantite").innerHTML = `Qté:${newValue}`;
-                      maj()
-                })
+              let qtyChange = document.querySelector('.itemQuantity')
+              qtyChange.addEventListener('change', function(e){
+              const pos = panier.findIndex(item => item.id === produitId && item.color === produitColor)
+              let newValue = e.target.value
+              panier[pos].qty = newValue
+              localStorage.clear
+              localStorage.setItem('cart', JSON.stringify(panier))
+              document.querySelector("#quantite").innerHTML = `Qté: ${newValue}`;
+              let newTotal = newValue * produitPrix
+              document.querySelector('#prix').innerHTML = `${newTotal} €`
+              })
             }
         )  
 }
