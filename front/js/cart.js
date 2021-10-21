@@ -53,7 +53,7 @@ for (const produit of panier) {
     </div>
     <div class="cart__item__content__settings">
       <div class="cart__item__content__settings__quantity">
-        <p id="quantite">Qté : ${produitQuantity} </p>
+        <p>Qté : <span id="quantite">${produitQuantity}</span> </p>
         <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${produitQuantity}">
       </div>
       <div class="cart__item__content__settings__delete">
@@ -78,18 +78,18 @@ for (const produit of panier) {
       
       // changement de quantité
         let qtyChange = document.querySelector('.itemQuantity')
+        console.log(qtyChange)
+        let quantite = qtyChange.closest('#quantite')
+        console.log(quantite)
         qtyChange.addEventListener('change', function(e){
         const pos = panier.findIndex(item => item.id === produitId && item.color === produitColor)
         let newValue = e.target.value
         panier[pos].qty = newValue
         localStorage.clear
         localStorage.setItem('cart', JSON.stringify(panier))
-        document.querySelector("#quantite").innerHTML = `Qté: ${newValue}`;
+        document.querySelector("#quantite").innerHTML = newValue
         let newTotal = newValue * produitPrix
         document.querySelector('#prix').innerHTML = `${newTotal} €`
-
-
-        
         })
       }
   )  
@@ -108,17 +108,17 @@ panier.forEach(element => {
 });
 console.table(products)
 
-let contact = {
-  firstName : document.getElementById('firstName').value,
-  lastName : document.getElementById('lastName').value,
-  address : document.getElementById('address').value,
-  city : document.getElementById('city').value,
-  email : document.getElementById('email').value,
-  products: products,
-}
-console.log(contact)
-
-function send() {
+function send(){
+  let contact = {
+    contact: {
+      firstName : document.getElementById('firstName').value,
+      lastName : document.getElementById('lastName').value,
+      address : document.getElementById('address').value,
+      city : document.getElementById('city').value,
+      email : document.getElementById('email').value,
+    },
+    products: products
+  }
   fetch("http://localhost:3000/api/products/order", {
     method: "POST",
     headers: {
@@ -129,14 +129,18 @@ function send() {
   })
   .then(function(res){
     if(res.ok){
-      return res.json
+      return res.json()
     }
   })
-  .then(function(){
-    
+  .then(function(res){
+    console.log(res)
+    document.location.href= `confirmation.html?orderId=${res.orderId}`
   })
 }
-document.getElementById('order').addEventListener('click', send())
+document.getElementById('order').addEventListener('click',function(e){
+  e.preventDefault()
+  send()
+} )
 
 //confirmation
 
