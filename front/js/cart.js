@@ -95,3 +95,51 @@ for (const produit of panier) {
 
 
 
+
+
+// formulaire
+
+let products = new Array
+panier.forEach(element => {
+      products.push(element.id)
+});
+console.table(products)
+
+function send(){
+  let contact = {
+    contact: {
+      firstName : document.getElementById('firstName').value,
+      lastName : document.getElementById('lastName').value,
+      address : document.getElementById('address').value,
+      city : document.getElementById('city').value,
+      email : document.getElementById('email').value,
+    },
+    products: products
+  }
+  fetch("http://localhost:3000/api/products/order", {
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(contact)
+  })
+  .then(function(res){
+    if(res.ok){
+      return res.json()
+    }
+  })
+  .then(function(res){
+    console.log(res)
+    document.location.href= `confirmation.html?orderId=${res.orderId}`
+  })
+}
+document.getElementById('order').addEventListener('click',function(e){
+  e.preventDefault()
+  send()
+} )
+
+//confirmation
+
+
+
