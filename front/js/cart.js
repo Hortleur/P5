@@ -98,7 +98,6 @@ for (const produit of panier) {
 
 
 // formulaire
-
 let products = new Array
 panier.forEach(element => {
       products.push(element.id)
@@ -116,6 +115,7 @@ function send(){
     },
     products: products
   }
+  console.log(contact.contact.firstName)
   fetch("http://localhost:3000/api/products/order", {
     method: "POST",
     headers: {
@@ -138,8 +138,5 @@ document.getElementById('order').addEventListener('click',function(e){
   e.preventDefault()
   send()
 } )
-
-//confirmation
-
-
-
+//regex
+let emailReg = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/g
