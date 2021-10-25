@@ -6,7 +6,13 @@ function getItemsFromCart() {
   function deleteItem(produitId, produitColor) {
     // 💡
     const panier = JSON.parse(getItemsFromCart());
-    const newPanier = panier.filter(item => item.id !== produitId && item.color !== produitColor)
+    const newPanier = panier.filter(item => {
+      if(item.id === produitId && item.color === produitColor) {
+      return false
+    } else {
+      return true
+    } 
+  })
     // stocker dans localstorage
     localStorage.setItem('cart', JSON.stringify(newPanier))
     // appeler loadCart()
@@ -17,7 +23,7 @@ function getItemsFromCart() {
     // reprendre ton code, ne pas oublier de déclarer la variable panier !
     const panier = JSON.parse(getItemsFromCart());
     const pos = panier.findIndex(item => item.id === produitId && item.color === produitColor)
-    panier[pos].qty = newValue
+    panier[pos].qty = produitQty
     // stocker dans localstorage
     localStorage.setItem('cart', JSON.stringify(panier))
     // appeler loadCart()
@@ -105,8 +111,9 @@ function getItemsFromCart() {
       element.addEventListener('change', function(event){
         const item = event.target.closest('article');
         const itemId = item.dataset.id;
-        const newValue = event.target.value
-        
+        const produitQty = event.target.value
+        const itemColor = item.dataset.color
+        updateQty(itemId, itemColor, produitQty)
 
       })
     });
