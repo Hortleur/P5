@@ -51,7 +51,7 @@ function getItemsFromCart() {
     
 
     // // ajouter le code HTML généré dans contenuHtml avec +=
-          document.getElementById('cart__items').innerHTML += `<article class="cart__item item_${produitId}" data-id="${produitId}">
+          document.getElementById('cart__items').innerHTML += `<article class="cart__item item_${produitId}" data-id="${produitId}" data-color="${produitColor}">
               <div class="cart__item__img">
                 <img src="${produitImage}" alt="${produitAlt}">
               </div>
@@ -88,27 +88,28 @@ function getItemsFromCart() {
   
   function handleEvents() {
     // récupérer tous les deleteItem et les .itemQuantité, boucler dessus et leur ajouter un eventListener adapté
-    let suppr = document.querySelectorAll('.deleteItem')
+    let supprimer = document.querySelectorAll('.deleteItem')
     let quantites = document.querySelectorAll('.itemQuantity')
     // 💡
-    // appeler dans les eventListener les fonction deleteItem et updateQty en leur passant les bons paramètres
-    suppr.forEach(element => {
-      element.addEventListener('click', function(event) {
+    // appeler dans les eventListener les fonction deleteItem et updateQty en leur passant les bons paramètres  
+    supprimer.forEach(suppr => {
+      suppr.addEventListener('click', function(event) {
         const item = event.target.closest('article');
         const itemId = item.dataset.id;
-        const panier = JSON.parse(getItemsFromCart())
-        console.log(panier)
-      })
-    
+        const itemColor = item.dataset.color;
+        deleteItem(itemId, itemColor)
+      });
+    });  
+
     quantites.forEach(element => {
       element.addEventListener('change', function(event){
         const item = event.target.closest('article');
         const itemId = item.dataset.id;
         const newValue = event.target.value
+        
 
       })
-    })
-  });
+    });
   }
   
   async function loadCart() {
