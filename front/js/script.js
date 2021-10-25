@@ -1,6 +1,6 @@
 /* création de la classe produit */
-class Produit{
-    constructor(jsonProduit){
+class Produit {
+    constructor(jsonProduit) {
         jsonProduit && Object.assign(this, jsonProduit)
     }
 }
@@ -9,12 +9,12 @@ class Produit{
 const myFetch = fetch("http://localhost:3000/api/products");
 
 
-    myFetch.then(data => data.json())
-    .then( jsonlistproduit =>{
-        for(let jsonProduit of jsonlistproduit){
+myFetch.then(data => data.json())
+    .then(jsonlistproduit => {
+        for (let jsonProduit of jsonlistproduit) {
             let produit = new Produit(jsonProduit);
-            document.querySelector("section").innerHTML += 
-            `<a href="./product.html?id=${produit._id}">
+            document.querySelector("section").innerHTML +=
+                `<a href="./product.html?id=${produit._id}">
                 <article>
                     <img src="${produit.imageUrl}" alt="${produit.altTxt}">
                     <h3 class="productName">
@@ -27,8 +27,3 @@ const myFetch = fetch("http://localhost:3000/api/products");
             </a>`
         }
     })
- 
-    
-
-
-
