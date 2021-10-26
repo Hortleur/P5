@@ -7,8 +7,6 @@ class Produit {
 
 /* Recuperation du contenu de l'api et insertion dans le dom */
 const myFetch = fetch("http://localhost:3000/api/products");
-
-
 myFetch.then(data => data.json())
     .then(jsonlistproduit => {
         for (let jsonProduit of jsonlistproduit) {

@@ -133,26 +133,29 @@ async function loadCart() {
 
 loadCart(); // lance la focntion ligne 41, qui appelle les deux fonctions principales
 
+
+
 function checkForm() {
+  // check regex for each element
+  // si tous les éléments sont bons : return true;
+  // si l'un est faux : return false;
   let emailReg = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/g
-  let reg = /^(([a-zA-Zà-ùÀ-Ù0-9\.-]+)(\ )?){0,7}$/g
+  let regAdress = /^(([a-zA-Zà-ùÀ-Ù0-9\.-]+)(\ )?){0,7}$/g
+  let reg = /^(([a-zA-Zà-ùÀ-Ù\.-]+)(\ )?){0,7}$/g
   const firstName = document.getElementById('firstName').value;
   const lastName = document.getElementById('lastName').value
   const address = document.getElementById('address').value
   const city = document.getElementById('city').value
   const email = document.getElementById('email').value
-  if (email.match(emailReg) && firstName.match(reg) && lastName.match(reg) && address.match(reg) && city.match(reg)) {
+  if (email.match(emailReg) && firstName.match(reg) && lastName.match(reg) && address.match(regAdress) && city.match(reg)) {
     return true
   } else {
     return false
   }
-
-  // check regex for each element
-  // si tous les éléments sont bons : return true;
-  // si l'un est faux : return false;
 }
 
 function send() {
+  //permet d'envoyer les données attenduent par l'API pour renvoyer la page confirmation.
   const isFormValid = checkForm(); // donc la variable prend la valeur true ou false
   if (isFormValid) {
     // on continue la suite
@@ -187,16 +190,14 @@ function send() {
       .then(function (res) {
         document.location.href = `confirmation.html?orderId=${res.orderId}`
       })
-    // ETC.
-    // ETC.
-    // ETC.
   } else {
     alert('Le formulaire est mal rempli.')
   }
 }
 
+//Evenement de soumission du formulaire et nettoyage du panier
 document.getElementById('order').addEventListener('click', function (e) {
   e.preventDefault()
   send()
-  localStorage.clear
+  localStorage.clear()
 })

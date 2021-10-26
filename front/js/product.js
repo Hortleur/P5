@@ -19,19 +19,22 @@ myFetch.then(res => res.json())
         });
     })
 
-
+//récupération du bouton
 let bouton = document.getElementById('addToCart');
 
+//selection de la couleur
 function couleur(_selectId = 'colors') {
     let couleur = document.getElementById('colors');
     return couleur.options[couleur.selectedIndex].value;
 }
 
+//selection de la quantité
 function nombre() {
     var nombre = document.getElementById('quantity').value;
-
     return nombre;
 }
+
+//evenement d'envois du produit dans le localStorage
 bouton.addEventListener("click", function () {
     const newItem = {
         id: produitUrlId,
