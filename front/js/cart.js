@@ -129,7 +129,7 @@ loadCart(); // lance la fonction qui appelle les deux fonctions principales
 
 
 function checkForm() {
-  
+
   // check regex for each element
   // si tous les éléments sont bons : return true;
   // si l'un est faux : return false;
@@ -142,27 +142,30 @@ function checkForm() {
   const city = document.getElementById('city').value
   const email = document.getElementById('email').value
 
+
   function erreur(erreur, donnée) {
     erreur.innerHTML = `${donnée} est invalide`
+
   }
-  
-  if (!firstName.match(reg)) {
+  if (!firstName.match(reg)){
     const prenom = document.getElementById('firstNameErrorMsg')
     erreur(prenom, firstName)
-  } else if (!lastName.match(reg)) {
+  }
+  if (!lastName.match(reg)) {
     const nom = document.getElementById('lastNameErrorMsg')
     erreur(nom, lastName)
-  } else if (!address.match(regAdress)) {
+  }
+  if (!address.match(regAdress)) {
     const adresse = document.getElementById('addressErrorMsg')
     erreur(adresse, address)
-  } else if (!city.match(reg)) {
+  }
+  if (!city.match(reg)) {
     const ville = document.getElementById('cityErrorMsg')
     erreur(ville, city)
-  } else if (!email.match(emailReg)) {
+  }
+  if (!email.match(emailReg)) {
     const mail = document.getElementById('emailErrorMsg')
     erreur(mail, email)
-  } else {
-    return true
   }
 }
 
