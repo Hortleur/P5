@@ -1,11 +1,11 @@
 function getItemsFromCart() {
   // return le localStorage du panier en json
-  return localStorage.getItem('cart')
+  return JSON.parse(localStorage.getItem('cart'))
 }
 
 function deleteItem(produitId, produitColor) {
   // 💡
-  const panier = JSON.parse(getItemsFromCart());
+  const panier = getItemsFromCart();
   const newPanier = panier.filter(item => {
     if (item.id === produitId && item.color === produitColor) {
       return false
@@ -21,7 +21,7 @@ function deleteItem(produitId, produitColor) {
 
 function updateQty(produitId, produitColor, produitQty) {
   // reprendre ton code, ne pas oublier de déclarer la variable panier !
-  const panier = JSON.parse(getItemsFromCart());
+  const panier = getItemsFromCart();
   const pos = panier.findIndex(item => item.id === produitId && item.color === produitColor)
   panier[pos].qty = produitQty
   // stocker dans localstorage
@@ -31,14 +31,14 @@ function updateQty(produitId, produitColor, produitQty) {
 }
 
 async function createProducts() {
-  // récupère le panier via la fonction précédente
-  let panier = JSON.parse(getItemsFromCart())
-  // initialise les totaux à 0
+  // récupèrer le panier via la fonction précédente
+  let panier = getItemsFromCart()
+  // initialiser les totaux à 0
   let prixTotal = 0
   let quantiteTotal = 0
-  // initialise le contenuHtml  à vide
-  document.getElementById('cart__items').innerHTML = ""
-  // boucle for des produits du panier
+  // initialiser le contenuHtml  à vide
+  let contentHtml = ""
+  // boucler sur les produits du panier
   for (const produit of panier) {
     let produitId = produit.id;
     let produitColor = produit.color;
@@ -55,9 +55,8 @@ async function createProducts() {
         let produitPrix = produitApi.price
         let total = produitPrix * produitQuantity
 
-
         // // ajouter le code HTML généré dans contenuHtml avec +=
-        document.getElementById('cart__items').innerHTML += `<article class="cart__item item_${produitId}" data-id="${produitId}" data-color="${produitColor}">
+        contentHtml += `<article class="cart__item item_${produitId}" data-id="${produitId}" data-color="${produitColor}">
               <div class="cart__item__img">
                 <img src="${produitImage}" alt="${produitAlt}">
               </div>
@@ -88,8 +87,9 @@ async function createProducts() {
       })
   }
   // vider le contenu de #cart__items
+  document.getElementById('cart__items').innerHTML = ""
   // remplir #cart__items avec contenuHtml
-  // écrire à leur place les totaux
+  document.getElementById('cart__items').innerHTML = contentHtml
 }
 
 function handleEvents() {
@@ -120,37 +120,49 @@ function handleEvents() {
 }
 
 async function loadCart() {
-  // c'est cette fonction qui appele la construction des éléments du panier et des eventlistener.
-  // à appeler à chaque modification de produits
-  const products = await createProducts(); // on lance la création des produits qui contient 
-  // un fetch : donc on attend que la fonction soit terminée pour lancer les lignes suivantes
+  const products = await createProducts();
   handleEvents(); // on ajoute au panier généré dans le DOM tous les eventListeners
 }
 
-// 🚨
-// 🚨
-// La seule ligne de code qui sera appelée au chargement de la page :
-
-loadCart(); // lance la focntion ligne 41, qui appelle les deux fonctions principales
+loadCart(); // lance la fonction qui appelle les deux fonctions principales
 
 
 
 function checkForm() {
+  
   // check regex for each element
   // si tous les éléments sont bons : return true;
   // si l'un est faux : return false;
-  let emailReg = /^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$/g
-  let regAdress = /^(([a-zA-Zà-ùÀ-Ù0-9\.-]+)(\ )?){0,7}$/g
+  let emailReg = /^([a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,})$/g
+  let regAdress = /^(([a-zA-Zà-ùÀ-Ù0-9\.-\.']+)(\ )?){0,7}$/g
   let reg = /^(([a-zA-Zà-ùÀ-Ù\.-\.']+)(\ )?){0,7}$/g
   const firstName = document.getElementById('firstName').value;
   const lastName = document.getElementById('lastName').value
   const address = document.getElementById('address').value
   const city = document.getElementById('city').value
   const email = document.getElementById('email').value
-  if (email.match(emailReg) && firstName.match(reg) && lastName.match(reg) && address.match(regAdress) && city.match(reg)) {
-    return true
+
+  function erreur(erreur, donnée) {
+    erreur.innerHTML = `${donnée} est invalide`
+  }
+  
+  if (!firstName.match(reg)) {
+    const prenom = document.getElementById('firstNameErrorMsg')
+    erreur(prenom, firstName)
+  } else if (!lastName.match(reg)) {
+    const nom = document.getElementById('lastNameErrorMsg')
+    erreur(nom, lastName)
+  } else if (!address.match(regAdress)) {
+    const adresse = document.getElementById('addressErrorMsg')
+    erreur(adresse, address)
+  } else if (!city.match(reg)) {
+    const ville = document.getElementById('cityErrorMsg')
+    erreur(ville, city)
+  } else if (!email.match(emailReg)) {
+    const mail = document.getElementById('emailErrorMsg')
+    erreur(mail, email)
   } else {
-    return false
+    return true
   }
 }
 
@@ -159,7 +171,7 @@ function send() {
   const isFormValid = checkForm(); // donc la variable prend la valeur true ou false
   if (isFormValid) {
     // on continue la suite
-    let panier = JSON.parse(getItemsFromCart())
+    let panier = getItemsFromCart()
     let products = new Array
     panier.forEach(element => {
       products.push(element.id)
@@ -189,6 +201,7 @@ function send() {
       })
       .then(function (res) {
         document.location.href = `confirmation.html?orderId=${res.orderId}`
+        localStorage.clear()
       })
   } else {
     alert('Le formulaire est mal rempli.')
@@ -199,5 +212,4 @@ function send() {
 document.getElementById('order').addEventListener('click', function (e) {
   e.preventDefault()
   send()
-  localStorage.clear()
 })
