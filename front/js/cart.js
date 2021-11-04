@@ -119,7 +119,7 @@ function handleEvents() {
 
 async function loadCart() {
   const products = await createProducts();
-  handleEvents(); // add eventListener to the created dom
+  handleEvents(); // add eventListener to the created DOM
 }
 
 loadCart(); // execute the function that call the two principals function
