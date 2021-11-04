@@ -1,5 +1,6 @@
 /* Recuperation du contenu de l'api et insertion dans le dom */
-fetch("http://localhost:3000/api/products")
+async function getProducts() {
+    await fetch("http://localhost:3000/api/products")
     .then(res => res.json())
     .then(produit => {
         for (const item of produit) {
@@ -17,3 +18,5 @@ fetch("http://localhost:3000/api/products")
                 </a>`
         }
     })
+}
+getProducts()

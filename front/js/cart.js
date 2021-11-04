@@ -129,7 +129,6 @@ loadCart(); // lance la fonction qui appelle les deux fonctions principales
 
 
 function checkForm() {
-
   // check regex for each element
   // si tous les éléments sont bons : return true;
   // si l'un est faux : return false;
@@ -145,7 +144,6 @@ function checkForm() {
 
   function erreur(erreur, donnée) {
     erreur.innerHTML = `${donnée} est invalide`
-
   }
   if (!firstName.match(reg)){
     const prenom = document.getElementById('firstNameErrorMsg')
@@ -166,6 +164,8 @@ function checkForm() {
   if (!email.match(emailReg)) {
     const mail = document.getElementById('emailErrorMsg')
     erreur(mail, email)
+  } else{
+    return true
   }
 }
 
