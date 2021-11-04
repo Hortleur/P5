@@ -19,7 +19,7 @@ async function getProducts() {
         }
     })
     .catch(function(err) {
-        
+        console.log("erreur")
     })
 }
 //execution of the function

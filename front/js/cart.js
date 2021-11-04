@@ -38,7 +38,9 @@ async function createProducts() {
   let quantiteTotal = 0
   // intialize empty contenuHtml
   let contentHtml = ""
-  // loop on cart products
+
+  if(panier.length > 0){
+    // loop on cart products
   for (const produit of panier) {
     let produitId = produit.id;
     let produitColor = produit.color;
@@ -84,6 +86,15 @@ async function createProducts() {
         quantiteTotal = parseInt(quantiteTotal) + parseInt(produitQuantity)
         document.getElementById('totalQuantity').innerHTML = quantiteTotal
       })
+      .catch(function(err) {
+        console.log("erreur")
+    })
+  } 
+  
+  } else {
+    contentHtml = "Votre panier est vide :'("
+    document.getElementById('totalPrice').innerHTML = 
+    document.getElementById('totalQuantity').innerHTML = 0
   }
   // empty #cart__items
   document.getElementById('cart__items').innerHTML = ""
@@ -112,7 +123,6 @@ function handleEvents() {
       const produitQty = event.target.value
       const itemColor = item.dataset.color
       updateQty(itemId, itemColor, produitQty)
-
     })
   });
 }

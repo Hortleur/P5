@@ -1,3 +1,38 @@
+// fonction d'ajout de produit
+function addItem(id, qty, color) {
+    //get button
+    let bouton = document.getElementById('addToCart');
+    bouton.addEventListener("click", function () {
+        const newItem = {
+            id: id,
+            qty: qty,
+            color: color,
+        }
+        // if cart already in localStorage
+        if (localStorage.getItem('cart') && localStorage.getItem('cart').length > 0) {
+            const cart = JSON.parse(localStorage.getItem('cart'));
+            // search for product in cart, if missing, product position = -1
+            const productPosition = cart.findIndex(item => item.id === newItem.id && item.color === newItem.color);
+            // if missing create new product in cart
+            if (productPosition === -1) {
+                cart.push(newItem);
+                localStorage.setItem('cart', JSON.stringify(cart));
+            } else {
+                // if product already there, update quantity
+                cart[productPosition].qty = parseInt(cart[productPosition].qty) + parseInt(newItem.qty);
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+            //alert
+            window.alert('Ce canapé à bien été ajouté');
+        } else {
+            // if cart missing create new cart
+            let newCart = new Array();
+            newCart.push(newItem);
+            localStorage.setItem('cart', JSON.stringify(newCart));
+            window.alert('Ce canapé à bien été ajouté');
+        }
+    })
+}
 // check  parameters in Url 
 async function getProduct() {
     const str = window.location.href;
@@ -24,57 +59,23 @@ async function getProduct() {
                     document.title = produit.name
                 });
             })
-            //get button
-            let bouton = document.getElementById('addToCart');
+            .catch(function(err) {
+                console.log("erreur")
+            })
 
-            //selection of color
-            function couleur(_selectId = 'colors') {
-                let couleur = document.getElementById('colors');
-                return couleur.options[couleur.selectedIndex].value;
-            }
 
-            //selection of quantity
-            function nombre() {
-                var nombre = document.getElementById('quantity').value;
-                return nombre;
-            }
+        //selection of color
+        function couleur(_selectId = 'colors') {
+            let couleur = document.getElementById('colors');
+            return couleur.options[couleur.selectedIndex].value;
+        }
 
-            // fonction d'ajout de produit
-
-            function addItem() {
-                bouton.addEventListener("click", function () {
-                    const newItem = {
-                        id: produitUrlId,
-                        color: couleur(),
-                        qty: nombre(),
-                    }
-                    // if cart already in localStorage
-                    if (localStorage.getItem('cart') && localStorage.getItem('cart').length > 0) {
-                        const cart = JSON.parse(localStorage.getItem('cart'));
-                        // search for product in cart, if missing, product position = -1
-                        const productPosition = cart.findIndex(item => item.id === newItem.id && item.color === newItem.color);
-                        // if missing create new product in cart
-                        if (productPosition === -1) {
-                            cart.push(newItem);
-                            localStorage.setItem('cart', JSON.stringify(cart));
-                            window.alert('Ce canapé à bien été ajouté');
-                        } else {
-                            // if product already there, update quantity
-                            cart[productPosition].qty = parseInt(cart[productPosition].qty) + parseInt(newItem.qty);
-                            localStorage.setItem('cart', JSON.stringify(cart));
-                        }
-                        //alert
-                        window.alert('Ce canapé à bien été ajouté');
-                    } else {
-                        // if cart missing create new cart
-                        let newCart = new Array();
-                        newCart.push(newItem);
-                        localStorage.setItem('cart', JSON.stringify(newCart));
-                        window.alert('Ce canapé à bien été ajouté');
-                    }
-                })
-            }
-            addItem()
+        //selection of quantity
+        function nombre() {
+            var nombre = document.getElementById('quantity').value;
+            return nombre;
+        }
+        addItem(produitUrlId, nombre(), couleur())
     }
 }
 
