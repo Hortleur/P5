@@ -1,4 +1,4 @@
-/* verification de paramètre dans l'url */
+// check  parameters in Url 
 async function getProduct() {
     const str = window.location.href;
     const url = new URL(str)
@@ -7,33 +7,33 @@ async function getProduct() {
         let produitUrlId = recherche_param.get('id');
         await fetch(`http://localhost:3000/api/products/${produitUrlId}`)
             .then(res => res.json())
-            /* affichage du produit choisis */
+            // show choosen products
             .then(produit => {
-                //image et texte alternatif
+                //alt texte and image
                 document.querySelector(".item__img").innerHTML = `<img src="${produit.imageUrl}" alt="${produit.altTxt}">`;
-                // nom du produit
+                // product name
                 document.getElementById("title").innerHTML = produit.name;
-                // prix
+                // price
                 document.getElementById("price").innerHTML = produit.price;
                 //description
                 document.getElementById("description").innerHTML = produit.description;
-                //couleur
+                //color
                 produit.colors.forEach(couleur => {
                     document.getElementById("colors").innerHTML += `<option value="${couleur}">${couleur}</option>`;
-                    //nom de la page
+                    //page name
                     document.title = produit.name
                 });
             })
-            //récupération du bouton
+            //get button
             let bouton = document.getElementById('addToCart');
 
-            //selection de la couleur
+            //selection of color
             function couleur(_selectId = 'colors') {
                 let couleur = document.getElementById('colors');
                 return couleur.options[couleur.selectedIndex].value;
             }
 
-            //selection de la quantité
+            //selection of quantity
             function nombre() {
                 var nombre = document.getElementById('quantity').value;
                 return nombre;
@@ -48,25 +48,25 @@ async function getProduct() {
                         color: couleur(),
                         qty: nombre(),
                     }
-                    // Si cart est déjà présent dans le Localstorage
+                    // if cart already in localStorage
                     if (localStorage.getItem('cart') && localStorage.getItem('cart').length > 0) {
                         const cart = JSON.parse(localStorage.getItem('cart'));
-                        // recherche du produit dans cart, si absent position = -1
+                        // search for product in cart, if missing, product position = -1
                         const productPosition = cart.findIndex(item => item.id === newItem.id && item.color === newItem.color);
-                        // si propduit absent, création d'un nouveau canapé dans cart
+                        // if missing create new product in cart
                         if (productPosition === -1) {
                             cart.push(newItem);
                             localStorage.setItem('cart', JSON.stringify(cart));
                             window.alert('Ce canapé à bien été ajouté');
                         } else {
-                            // si produit déjà présent, mise à jour de la quantité en utilisant sa position
+                            // if product already there, update quantity
                             cart[productPosition].qty = parseInt(cart[productPosition].qty) + parseInt(newItem.qty);
                             localStorage.setItem('cart', JSON.stringify(cart));
                         }
-                        //signale que le canapé à bien été ajouté
+                        //alert
                         window.alert('Ce canapé à bien été ajouté');
                     } else {
-                        // si cart absent, création d'un nouveau cart
+                        // if cart missing create new cart
                         let newCart = new Array();
                         newCart.push(newItem);
                         localStorage.setItem('cart', JSON.stringify(newCart));
@@ -79,7 +79,5 @@ async function getProduct() {
 }
 
 
-
+// execution of the function
 getProduct();
-
-//evenement d'envois du produit dans le localStorage

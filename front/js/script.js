@@ -1,4 +1,4 @@
-/* Recuperation du contenu de l'api et insertion dans le dom */
+// recovery of Api content and insertion in DOM
 async function getProducts() {
     await fetch("http://localhost:3000/api/products")
     .then(res => res.json())
@@ -18,5 +18,9 @@ async function getProducts() {
                 </a>`
         }
     })
+    .catch(function(err) {
+        
+    })
 }
+//execution of the function
 getProducts()

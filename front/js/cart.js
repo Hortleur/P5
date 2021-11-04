@@ -1,10 +1,10 @@
 function getItemsFromCart() {
-  // return le localStorage du panier en json
+  // return the localStorage of cart in json
   return JSON.parse(localStorage.getItem('cart'))
 }
 
 function deleteItem(produitId, produitColor) {
-  // 💡
+  //declare cart
   const panier = getItemsFromCart();
   const newPanier = panier.filter(item => {
     if (item.id === produitId && item.color === produitColor) {
@@ -13,38 +13,38 @@ function deleteItem(produitId, produitColor) {
       return true
     }
   })
-  // stocker dans localstorage
+  // store in localstorage
   localStorage.setItem('cart', JSON.stringify(newPanier))
-  // appeler loadCart()
+  // call loadCart()
   loadCart()
 }
 
 function updateQty(produitId, produitColor, produitQty) {
-  // reprendre ton code, ne pas oublier de déclarer la variable panier !
+  //declare cart
   const panier = getItemsFromCart();
   const pos = panier.findIndex(item => item.id === produitId && item.color === produitColor)
   panier[pos].qty = produitQty
-  // stocker dans localstorage
+  // store in localstorage
   localStorage.setItem('cart', JSON.stringify(panier))
-  // appeler loadCart()
+  // call loadCart()
   loadCart()
 }
 
 async function createProducts() {
-  // récupèrer le panier via la fonction précédente
+  // get cart
   let panier = getItemsFromCart()
-  // initialiser les totaux à 0
+  // initialize totalprice and totalquantity at 0
   let prixTotal = 0
   let quantiteTotal = 0
-  // initialiser le contenuHtml  à vide
+  // intialize empty contenuHtml
   let contentHtml = ""
-  // boucler sur les produits du panier
+  // loop on cart products
   for (const produit of panier) {
     let produitId = produit.id;
     let produitColor = produit.color;
     let produitQuantity = produit.qty;
 
-    // // ajouter "await" devant le fetch
+    // add "await" before fetch
     await fetch(`http://localhost:3000/api/products/${produitId}`)
       .then(res => res.json())
       .then(produitApi => {
@@ -55,7 +55,7 @@ async function createProducts() {
         let produitPrix = produitApi.price
         let total = produitPrix * produitQuantity
 
-        // // ajouter le code HTML généré dans contenuHtml avec +=
+        // add HTML generated in contenuHtml with +=
         contentHtml += `<article class="cart__item item_${produitId}" data-id="${produitId}" data-color="${produitColor}">
               <div class="cart__item__img">
                 <img src="${produitImage}" alt="${produitAlt}">
@@ -77,27 +77,25 @@ async function createProducts() {
                 </div>
               </div>
             </article>`
-        // // ajouter les quantité et prix aux totaux initialisés au début
+        //add price and qty to the initials price and quantity
         prixTotal = parseInt(prixTotal) + parseInt(total)
         document.getElementById('totalPrice').innerHTML = prixTotal
 
         quantiteTotal = parseInt(quantiteTotal) + parseInt(produitQuantity)
         document.getElementById('totalQuantity').innerHTML = quantiteTotal
-        // // fin de boucle
       })
   }
-  // vider le contenu de #cart__items
+  // empty #cart__items
   document.getElementById('cart__items').innerHTML = ""
-  // remplir #cart__items avec contenuHtml
+  // fill #cart__items with contenuHtml
   document.getElementById('cart__items').innerHTML = contentHtml
 }
 
 function handleEvents() {
-  // récupérer tous les deleteItem et les .itemQuantité, boucler dessus et leur ajouter un eventListener adapté
+  // get all DOM deleteItem and itemQuantity
   let supprimer = document.querySelectorAll('.deleteItem')
   let quantites = document.querySelectorAll('.itemQuantity')
-  // 💡
-  // appeler dans les eventListener les fonction deleteItem et updateQty en leur passant les bons paramètres  
+  // call deleteItem and updateQty in each event  
   supprimer.forEach(suppr => {
     suppr.addEventListener('click', function (event) {
       const item = event.target.closest('article');
@@ -121,17 +119,15 @@ function handleEvents() {
 
 async function loadCart() {
   const products = await createProducts();
-  handleEvents(); // on ajoute au panier généré dans le DOM tous les eventListeners
+  handleEvents(); // add eventListener to the created dom
 }
 
-loadCart(); // lance la fonction qui appelle les deux fonctions principales
+loadCart(); // execute the function that call the two principals function
 
 
 
 function checkForm() {
-  // check regex for each element
-  // si tous les éléments sont bons : return true;
-  // si l'un est faux : return false;
+  // regex creation for eache elements
   let emailReg = /^([a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,})$/g
   let regAdress = /^(([a-zA-Zà-ùÀ-Ù0-9\.-\.']+)(\ )?){0,7}$/g
   let reg = /^(([a-zA-Zà-ùÀ-Ù\.-\.']+)(\ )?){0,7}$/g
@@ -145,6 +141,7 @@ function checkForm() {
   function erreur(erreur, donnée) {
     erreur.innerHTML = `${donnée} est invalide`
   }
+  // if there is no match return false
   if (!firstName.match(reg)){
     const prenom = document.getElementById('firstNameErrorMsg')
     erreur(prenom, firstName)
@@ -165,15 +162,15 @@ function checkForm() {
     const mail = document.getElementById('emailErrorMsg')
     erreur(mail, email)
   } else{
+    // if all elements match : return true;
     return true
   }
 }
 
 function send() {
-  //permet d'envoyer les données attenduent par l'API pour renvoyer la page confirmation.
-  const isFormValid = checkForm(); // donc la variable prend la valeur true ou false
+  //send data to the Api and redirect to corfirmation page.
+  const isFormValid = checkForm();
   if (isFormValid) {
-    // on continue la suite
     let panier = getItemsFromCart()
     let products = new Array
     panier.forEach(element => {
@@ -211,7 +208,7 @@ function send() {
   }
 }
 
-//Evenement de soumission du formulaire et nettoyage du panier
+//submit event and clean cart
 document.getElementById('order').addEventListener('click', function (e) {
   e.preventDefault()
   send()
