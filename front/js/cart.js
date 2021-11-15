@@ -147,35 +147,48 @@ function checkForm() {
   const city = document.getElementById('city').value
   const email = document.getElementById('email').value
 
+  
 
   function erreur(erreur, donnée) {
     erreur.innerHTML = `${donnée} est invalide`
   }
+  let falseCount = 0
+  
   // if there is no match return false
   if (!firstName.match(reg)){
     const prenom = document.getElementById('firstNameErrorMsg')
-    erreur(prenom, firstName)
+    erreur(prenom, firstName);
+    falseCount ++;
   }
   if (!lastName.match(reg)) {
     const nom = document.getElementById('lastNameErrorMsg')
     erreur(nom, lastName)
+    falseCount ++;
   }
   if (!address.match(regAdress)) {
     const adresse = document.getElementById('addressErrorMsg')
     erreur(adresse, address)
+    falseCount ++;
   }
   if (!city.match(reg)) {
     const ville = document.getElementById('cityErrorMsg')
     erreur(ville, city)
+    falseCount ++;
   }
   if (!email.match(emailReg)) {
     const mail = document.getElementById('emailErrorMsg')
     erreur(mail, email)
-  } else{
-    // if all elements match : return true;
-    return true
+    falseCount ++;
+  } else {
+    if (falseCount === 0){
+      return true
+    }else{
+      return false
+    }
   }
 }
+
+
 
 function send() {
   //send data to the Api and redirect to corfirmation page.
