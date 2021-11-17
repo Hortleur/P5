@@ -139,8 +139,8 @@ loadCart(); // execute the function that call the two principals function
 function checkForm() {
   // regex creation for eache elements
   let emailReg = /^([a-zA-Z0-9]+(?:[._-][a-zA-Z0-9]+)*)@([a-zA-Z0-9]+(?:[.-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,})$/g
-  let regAdress = /^(([a-zA-Zà-ùÀ-Ù0-9\.-\.']+)(\ )?){0,7}$/g
-  let reg = /^(([a-zA-Zà-ùÀ-Ù\.-\.']+)(\ )?){0,7}$/g
+  let regAdress = /^(([a-zA-Zà-ùÀ-Ù0-9\-\.']+)(\ )?){0,7}$/g
+  let reg = /^(([a-zA-Zà-ùÀ-Ù\-\.']+)(\ )?){0,7}$/g
   const firstName = document.getElementById('firstName').value;
   const lastName = document.getElementById('lastName').value
   const address = document.getElementById('address').value
