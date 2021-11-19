@@ -1,13 +1,19 @@
 // fonction d'ajout de produit
-function addItem(id, qty, color) {
+function addItem(id) {
     //get button
     let bouton = document.getElementById('addToCart');
     bouton.addEventListener("click", function () {
+        //selection of color
+        let color = document.getElementById('colors')
+        color = color.options[color.selectedIndex].value;
+        //selection of quantity
+        const qty = document.getElementById('quantity').value;
         const newItem = {
             id: id,
             qty: qty,
             color: color,
         }
+        console.log(newItem);
         // if cart already in localStorage
         if (localStorage.getItem('cart') && localStorage.getItem('cart').length > 0) {
             const cart = JSON.parse(localStorage.getItem('cart'));
@@ -62,20 +68,7 @@ async function getProduct() {
             .catch(function(err) {
                 console.log("erreur")
             })
-
-
-        //selection of color
-        function couleur(_selectId = 'colors') {
-            let couleur = document.getElementById('colors');
-            return couleur.options[couleur.selectedIndex].value;
-        }
-
-        //selection of quantity
-        function nombre() {
-            var nombre = document.getElementById('quantity').value;
-            return nombre;
-        }
-        addItem(produitUrlId, nombre(), couleur())
+        addItem(produitUrlId)
     }
 }
 

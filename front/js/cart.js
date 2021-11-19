@@ -134,7 +134,10 @@ async function loadCart() {
 
 loadCart(); // execute the function that call the two principals function
 
-
+function escapeHtml(unsafe)
+{
+    return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+}
 
 function checkForm() {
   // regex creation for eache elements
@@ -147,10 +150,8 @@ function checkForm() {
   const city = document.getElementById('city').value
   const email = document.getElementById('email').value
 
-  
-
-  function erreur(erreur, donnée) {
-    erreur.innerHTML = `${donnée} est invalide`
+  function erreur(erreur, donnee) {
+    erreur.innerHTML = `${escapeHtml(donnee)} est invalide`
   }
   let falseCount = 0
   
